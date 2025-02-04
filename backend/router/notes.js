@@ -16,4 +16,51 @@ router.post("/addnote", fetchUser, async (req, res) => {
   res.json({ note });
 });
 
+//update a note
+router.put("/updateNote/:id", fetchUser, async (req, res) => {
+  try {
+    let { id } = req.params;
+    let { title, description, tag } = req.body;
+
+    let note = await Notes.findById(id);
+    if (!note) {
+      return res.status(404).json({ error: "Note not found" });
+    }
+
+    if (req.user.id != note.user.toString()) {
+      return res
+        .status(401)
+        .json({ error: "You are not authorized to update this." });
+    }
+
+    const updatedNote = await Notes.findByIdAndUpdate(
+      id,
+      { title, description, tag },
+      { new: true }
+    );
+
+    res.json(updatedNote);
+  } catch (err) {
+    res.status(400).json({ error: "Some error occurred" });
+  }
+});
+
+//delete a note
+router.delete("/deleteNote/:id", fetchUser, async (req, res) => {
+  try {
+    let { id } = req.params;
+    let note = await Notes.findById(id);
+    if (req.user.id != note.user.toString()) {
+      return res
+        .status(401)
+        .json({ error: "You are not authorized to update this." });
+    }
+
+    const deletedNote = await Notes.findByIdAndDelete(id);
+
+    res.json({ deletedNote, message: "note deleted" });
+  } catch (err) {
+    res.status(400).json("Some error orrucred");
+  }
+});
 module.exports = router;
