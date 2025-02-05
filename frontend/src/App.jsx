@@ -9,8 +9,6 @@ function App() {
   return (
     <NoteState>
       <Router>
-        {" "}
-        {/* ✅ Router should wrap everything */}
         <Navbar />
         <div className="p-4">
           <Routes>

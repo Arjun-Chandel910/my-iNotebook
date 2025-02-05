@@ -5,7 +5,7 @@ const Notes = require("../models/notes");
 
 router.get("/getallnotes", fetchUser, async (req, res) => {
   const notes = await Notes.find({ user: req.user.id });
-  res.json({ notes });
+  res.json(notes);
 });
 
 router.post("/addnote", fetchUser, async (req, res) => {

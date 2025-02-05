@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import Notes from "./Notes";
 import NoteContext from "../context/notes/NoteContext";
-
 const Home = () => {
   let state = useContext(NoteContext);
-  let { addNote } = state;
+
+  let { addNote, getNote } = state;
   let [note, setNote] = useState({
     title: "",
     description: "",
@@ -12,8 +12,8 @@ const Home = () => {
   });
 
   let handleInp = (e) => {
-    setNote(() => {
-      return { ...note, [e.target.name]: e.target.value };
+    setNote((p) => {
+      return { ...p, [e.target.name]: e.target.value };
     });
   };
   const handleForm = (e) => {
@@ -30,6 +30,7 @@ const Home = () => {
             type="text"
             placeholder="title"
             name="title"
+            required
             onChange={handleInp}
             value={note.title}
             className="bg-white pl-8  border-2 border-solid rounded-3xl  border-blue-500"
@@ -40,6 +41,7 @@ const Home = () => {
             type="text"
             name="description"
             value={note.description}
+            required
             onChange={handleInp}
             placeholder="description"
             className="bg-white pl-8  border-2 border-solid rounded-3xl  border-blue-500"
@@ -51,6 +53,7 @@ const Home = () => {
             name="tag"
             value={note.value}
             onChange={handleInp}
+            required
             placeholder="tag"
             className="bg-white pl-8  border-2 border-solid rounded-3xl  border-blue-500"
           />
@@ -64,8 +67,8 @@ const Home = () => {
       <br />
       <br />
 
-      <hr />
-      <h1 className="text-center text-4xl mb-4">All Notes</h1>
+      <hr className="text-rose-500" />
+      <h1 className="text-center text-4xl mb-4 text-blue-500">All Notes</h1>
       <Notes></Notes>
     </div>
   );
