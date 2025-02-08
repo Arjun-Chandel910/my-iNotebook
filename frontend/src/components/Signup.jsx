@@ -1,32 +1,72 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
+
 const Signup = () => {
+  let navigate = useNavigate();
+
+  let [state, setState] = useState({ name: "", email: "", password: "" });
+
+  let handleInp = (e) => {
+    setState((user) => {
+      return { ...user, [e.target.name]: e.target.value };
+    });
+  };
+  let handleSubmit = async (e) => {
+    e.preventDefault();
+    let res = await fetch("http://localhost:8080/api/auth/signup", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        name: state.name,
+        email: state.email,
+        password: state.password,
+      }),
+    });
+    res = await res.json();
+    console.log(res);
+    if (res.success) {
+      localStorage.setItem("token", res.authToken);
+      navigate("/");
+    } else {
+      alert("something went wrong ");
+    }
+  };
+
   return (
     <div className="flex flex-col m-auto justify-center item-center">
       <h1 className="text-2xl text-center">Signup</h1>
-      <form action="" className="text-center">
+      <form action="" className="text-center" onSubmit={handleSubmit}>
         <TextField
-          id="standard-basic"
           label="name"
           variant="standard"
           required
+          name="name"
+          onChange={handleInp}
+          value={state.name}
         />
         <br />
         <br />
         <TextField
-          id="standard-basic"
           label="email"
           variant="standard"
           required
+          name="email"
+          onChange={handleInp}
+          value={state.email}
         />
         <br />
         <br />
         <TextField
-          id="standard-basic"
           label="password"
           variant="standard"
           required
+          name="password"
+          onChange={handleInp}
+          value={state.passworde}
         />
         <br />
         <br />

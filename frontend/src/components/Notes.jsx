@@ -140,6 +140,7 @@ const Notes = () => {
       </Modal>
 
       <div className="flex flex-wrap justify-evenly">
+        {notes.length === 0 && "No notes available."}
         {notes.map((d) => (
           <NoteItem note={d} key={d._id} updateNote={updateNote} /> // ✅ Corrected prop passing
         ))}

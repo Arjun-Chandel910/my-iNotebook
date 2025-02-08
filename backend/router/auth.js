@@ -14,12 +14,13 @@ router.get("/", (req, res) => {
 });
 
 //adding new user
-router.post("/", async (req, res) => {
+router.post("/signup", async (req, res) => {
   try {
     const { error } = validateUser(req.body);
     //check weather user already exists
     let user = await User.find({ email: req.body.email });
-    if (user.length > 0) {
+    let success = false;
+    if (user && user.length > 0) {
       return res.status(400).json({
         success: false,
         message: "email already exists",
@@ -43,10 +44,11 @@ router.post("/", async (req, res) => {
       },
     };
     let authToken = jwt.sign(JWT_data, JWT_SECRET);
-
-    res.json({ token: authToken });
+    success = true;
+    res.json({ success, token: authToken });
   } catch (err) {
-    res.status(500).json({ message: err });
+    success = false;
+    res.status(500).json({ success, message: err });
   }
 });
 
@@ -59,14 +61,18 @@ router.post("/login", async (req, res) => {
 
   try {
     let { email, password } = req.body;
+    //finding if user exists
     let user = await User.findOne({ email: email });
     if (!user) {
       return res.status(400).json({ message: "User does not exist" });
     }
 
+    let success = false;
+    // comparing the password to login
     let comparepass = await bcrypt.compare(password, user.password);
     if (!comparepass) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      success = false;
+      return res.status(400).json({ success, message: "Invalid credentials" });
     }
 
     const JWT_data = {
@@ -75,8 +81,8 @@ router.post("/login", async (req, res) => {
       },
     };
     let authToken = jwt.sign(JWT_data, JWT_SECRET);
-
-    res.json({ message: "logged in successfully", token: authToken });
+    success = true;
+    res.json({ success, token: authToken });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Some error occurred" });
