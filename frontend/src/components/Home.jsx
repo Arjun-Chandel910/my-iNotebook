@@ -4,7 +4,7 @@ import NoteContext from "../context/notes/NoteContext";
 const Home = () => {
   let state = useContext(NoteContext);
 
-  let { addNote, getNote } = state;
+  let { addNote } = state;
   let [note, setNote] = useState({
     title: "",
     description: "",
@@ -18,7 +18,7 @@ const Home = () => {
   };
   const handleForm = (e) => {
     e.preventDefault();
-    console.log("form");
+
     addNote(note.title, note.description, note.tag);
   };
   return (

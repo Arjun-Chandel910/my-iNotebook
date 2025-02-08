@@ -9,7 +9,7 @@ const NoteState = ({ children }) => {
       headers: {
         "content-type": "application/json",
         "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc5ZGFlNTlmNGM1MTRkNGFiOTU1NThlIn0sImlhdCI6MTczODQwMzk1M30.CcSMhX_f73RAynTX8ZYCuRK4OiAJGyvT5oUBxrnMvQ0",
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7fSwiaWF0IjoxNzM4ODU4MDc4fQ.L1n62cqHP6mOcndEaV5z1tBlYemQv2Hmgiwm6b9sSwo",
       },
     });
     let res = await response.json();

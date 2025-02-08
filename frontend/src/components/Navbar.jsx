@@ -1,8 +1,17 @@
 import React, { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+// Navigate to specific path
 
 function Navbar() {
+  const navigate = useNavigate();
   let location = useLocation();
+
+  let handleLogin = () => {
+    navigate("/login");
+  };
+  let handleSignup = () => {
+    navigate("/signup");
+  };
 
   // useEffect(() => {
   //   // Google Analytics
@@ -40,10 +49,16 @@ function Navbar() {
         </div>
 
         <div className="flex flex-wrap justify-evenly w-1/5">
-          <button className="bg-blue-500 text-white h-8 m-2 w-16 rounded-lg">
+          <button
+            className="bg-blue-500 text-white h-8 m-2 w-16 rounded-lg"
+            onClick={handleLogin}
+          >
             Login
           </button>
-          <button className="bg-blue-500 text-white h-8 m-2 w-16 rounded-lg">
+          <button
+            className="bg-blue-500 text-white h-8 m-2 w-16 rounded-lg"
+            onClick={handleSignup}
+          >
             Signup
           </button>
         </div>
