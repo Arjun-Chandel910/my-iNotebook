@@ -4,38 +4,53 @@ import NoteContext from "./NoteContext"; // Ensure this is correctly created wit
 const NoteState = ({ children }) => {
   let [notes, setNotes] = useState([]);
   let getNote = async () => {
-    let response = await fetch(`http://localhost:8080/api/notes/getallnotes`, {
+    let token = localStorage.getItem("token");
+    console.log("getNote token  : " + token);
+    if (!token) {
+      return;
+    }
+    let res = await fetch(`http://localhost:8080/api/notes/getallnotes`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc5ZGFlNTlmNGM1MTRkNGFiOTU1NThlIn0sImlhdCI6MTczODQwMzk1M30.CcSMhX_f73RAynTX8ZYCuRK4OiAJGyvT5oUBxrnMvQ0",
+        "auth-token": token,
       },
     });
-    let res = await response.json();
+    let resData = await res.json();
 
-    setNotes(res);
+    setNotes(resData);
   };
 
   let addNote = async (title, description, tag) => {
+    let token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Sign up or Login to add Notes");
+      return;
+    }
+
     await fetch(`http://localhost:8080/api/notes/addnote`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc5ZGFlNTlmNGM1MTRkNGFiOTU1NThlIn0sImlhdCI6MTczODQwMzk1M30.CcSMhX_f73RAynTX8ZYCuRK4OiAJGyvT5oUBxrnMvQ0",
+        "auth-token": token,
       },
       body: JSON.stringify({ title, description, tag }),
     });
     getNote();
   };
   let deleteNote = async (id) => {
+    let token = localStorage.getItem("token");
+
+    if (!token) {
+      console.log("login first");
+      return;
+    }
     let res = await fetch(`http://localhost:8080/api/notes/deleteNote/${id}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc5ZGFlNTlmNGM1MTRkNGFiOTU1NThlIn0sImlhdCI6MTczODQwMzk1M30.CcSMhX_f73RAynTX8ZYCuRK4OiAJGyvT5oUBxrnMvQ0",
+        "auth-token": token,
       },
     });
     console.log(res);
@@ -43,12 +58,17 @@ const NoteState = ({ children }) => {
   };
 
   let editNote = async (id, title, description, tag) => {
+    let token = localStorage.getItem("token");
+
+    if (!token) {
+      console.log("login first");
+      return;
+    }
     await fetch(`http://localhost:8080/api/notes/updateNote/${id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc5ZGFlNTlmNGM1MTRkNGFiOTU1NThlIn0sImlhdCI6MTczODQwMzk1M30.CcSMhX_f73RAynTX8ZYCuRK4OiAJGyvT5oUBxrnMvQ0",
+        "auth-token": token,
       },
       body: JSON.stringify({ title, description, tag }),
     });

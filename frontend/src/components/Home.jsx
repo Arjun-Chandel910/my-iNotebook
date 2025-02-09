@@ -4,11 +4,11 @@ import NoteContext from "../context/notes/NoteContext";
 const Home = () => {
   let state = useContext(NoteContext);
 
-  let { addNote } = state;
+  let { addNote, getNote } = state;
   let [note, setNote] = useState({
     title: "",
     description: "",
-    tag: "General",
+    tag: "",
   });
 
   let handleInp = (e) => {
@@ -18,8 +18,13 @@ const Home = () => {
   };
   const handleForm = (e) => {
     e.preventDefault();
-
+    console.log("form");
     addNote(note.title, note.description, note.tag);
+    setNote({
+      title: "",
+      description: "",
+      tag: "",
+    });
   };
   return (
     <div>
@@ -66,10 +71,14 @@ const Home = () => {
       </div>
       <br />
       <br />
-
-      <hr className="text-rose-500" />
-      <h1 className="text-center text-4xl mb-4 text-blue-500">All Notes</h1>
-      <Notes></Notes>
+      {localStorage.getItem("token") && (
+        <>
+          {" "}
+          <hr className="text-rose-500" />
+          <h1 className="text-center text-4xl mb-4 text-blue-500">All Notes</h1>
+          <Notes></Notes>
+        </>
+      )}
     </div>
   );
 };

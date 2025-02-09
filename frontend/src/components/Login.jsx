@@ -18,14 +18,14 @@ const Login = () => {
     let res = await fetch("http://localhost:8080/api/auth/login", {
       method: "POST",
       headers: {
-        "content-type": "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email: state.email, password: state.password }),
     });
-    res = await res.json();
-    console.log(res);
-    if (res.success) {
-      localStorage.setItem("token", res.authToken);
+    let resData = await res.json();
+    console.log(resData.token);
+    if (resData.success) {
+      localStorage.setItem("token", resData.token);
       navigate("/");
     } else {
       alert("wrong credentials");

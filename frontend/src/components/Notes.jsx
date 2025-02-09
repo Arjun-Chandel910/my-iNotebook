@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import NoteContext from "../context/notes/NoteContext";
-import NoteItem from "./NoteItem";
 
 import Box from "@mui/material/Box";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Modal from "@mui/material/Modal";
+import { useNavigate } from "react-router-dom";
+import NoteItem from "./NoteItem";
 
 const style = {
   position: "absolute",
@@ -22,12 +23,17 @@ const style = {
 };
 
 const Notes = () => {
+  let navigate = useNavigate();
   let state = useContext(NoteContext);
   let { notes, getNote, editNote } = state;
 
   useEffect(() => {
-    getNote();
-  }, []); // ✅ Added getNote as a dependency
+    if (localStorage.getItem("token")) {
+      getNote();
+    } else {
+      navigate("/");
+    }
+  }, [getNote]); // ✅ Added getNote as a dependency
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);

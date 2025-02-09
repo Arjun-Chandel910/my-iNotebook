@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const fetchUser = require("../middleware/islogged");
 const Notes = require("../models/notes");
+const User = require("../models/user");
 
 router.get("/getallnotes", fetchUser, async (req, res) => {
   const notes = await Notes.find({ user: req.user.id });
@@ -10,10 +11,15 @@ router.get("/getallnotes", fetchUser, async (req, res) => {
 
 router.post("/addnote", fetchUser, async (req, res) => {
   let userId = req.user.id;
-  let { title, description } = req.body;
-  let note = new Notes({ user: userId, title, description });
-  await note.save();
-  res.json({ note });
+  let checkUser = await User.findById(userId);
+  if (!checkUser) {
+    res.status(400).json({ success: "false", message: "user not valid" });
+  } else {
+    let { title, description } = req.body;
+    let note = new Notes({ user: userId, title, description });
+    await note.save();
+    res.json({ note });
+  }
 });
 
 //update a note

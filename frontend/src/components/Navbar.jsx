@@ -1,16 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import NoteContext from "../context/notes/NoteContext";
 // Navigate to specific path
 
 function Navbar() {
   const navigate = useNavigate();
   let location = useLocation();
+  let state = useContext(NoteContext);
+  let { getNote } = state;
 
   let handleLogin = () => {
     navigate("/login");
   };
   let handleSignup = () => {
     navigate("/signup");
+  };
+  let handleLogout = () => {
+    localStorage.removeItem("token");
+
+    getNote();
+    navigate("/");
   };
 
   // useEffect(() => {
@@ -48,20 +57,31 @@ function Navbar() {
           </Link>
         </div>
 
-        <div className="flex flex-wrap justify-evenly w-1/5">
-          <button
-            className="bg-blue-500 text-white h-8 m-2 w-16 rounded-lg"
-            onClick={handleLogin}
-          >
-            Login
-          </button>
-          <button
-            className="bg-blue-500 text-white h-8 m-2 w-16 rounded-lg"
-            onClick={handleSignup}
-          >
-            Signup
-          </button>
-        </div>
+        {!localStorage.getItem("token") ? (
+          <div className="flex flex-wrap justify-evenly w-1/5">
+            <button
+              className="bg-blue-500 text-white h-8 m-2 w-16 rounded-lg"
+              onClick={handleLogin}
+            >
+              Login
+            </button>
+            <button
+              className="bg-blue-500 text-white h-8 m-2 w-16 rounded-lg"
+              onClick={handleSignup}
+            >
+              Signup
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-wrap justify-evenly w-1/5">
+            <button
+              className="bg-blue-500 text-white h-8 m-2 w-16 rounded-lg"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </div>
+        )}
       </div>
     </>
   );

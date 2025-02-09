@@ -26,10 +26,10 @@ const Signup = () => {
         password: state.password,
       }),
     });
-    res = await res.json();
-    console.log(res);
-    if (res.success) {
-      localStorage.setItem("token", res.authToken);
+    let resData = await res.json();
+    console.log(resData.token);
+    if (resData.success) {
+      localStorage.setItem("token", resData.token);
       navigate("/");
     } else {
       alert("something went wrong ");
@@ -66,7 +66,7 @@ const Signup = () => {
           required
           name="password"
           onChange={handleInp}
-          value={state.passworde}
+          value={state.password}
         />
         <br />
         <br />
