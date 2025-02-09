@@ -1,1 +1,1 @@
-# this Project was just made to clear the conecpts  of react and how it is connected with backend.
+# This Project was  made to understand the conecpts of React and how it is connected with Backend.
